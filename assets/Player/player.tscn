@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bapvy71043313"]
+[gd_scene load_steps=22 format=3 uid="uid://bapvy71043313"]
 
 [ext_resource type="Script" uid="uid://b4ta3tyio217r" path="res://assets/Player/player.gd" id="1_qm3y6"]
 [ext_resource type="Texture2D" uid="uid://bt8gb54hjkhl1" path="res://assets/Player/player.png" id="2_vtor2"]
@@ -149,6 +149,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ok28f"]
+size = Vector2(18, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qm3y6"]
+size = Vector2(17, 13)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_qm3y6")
@@ -159,5 +163,10 @@ sprite_frames = SubResource("SpriteFrames_f4wda")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="stand" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0)
 shape = SubResource("RectangleShape2D_ok28f")
+
+[node name="crouch" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_qm3y6")

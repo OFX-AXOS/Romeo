@@ -1,46 +1,53 @@
 extends CharacterBody2D
 
-
-const SPEED = 110.0
 const JUMP_VELOCITY = -300.0
 
+@onready var stand: CollisionShape2D = $stand
+@onready var crouch: CollisionShape2D = $crouch
 @onready var animated_sprite_2d = $AnimatedSprite2D
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-
+var is_crouching := false
 
 func _physics_process(delta):
-	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	# Handle Jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-	
+	is_crouching = Input.is_action_pressed("crouch") and is_on_floor()
 
-	# Get the input direction (input_axis) and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
+	if Input.is_action_just_pressed("jump") and is_on_floor() and not is_crouching:
+		velocity.y = JUMP_VELOCITY
+
+	var current_speed = 55.0 if is_crouching else 110.0
 	var input_axis = Input.get_axis("left", "right")
-	if input_axis:
-		velocity.x = input_axis * SPEED
+
+	if input_axis != 0:
+		velocity.x = input_axis * current_speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, current_speed)
 
 	move_and_slide()
+
+	update_collision()
 	update_animations(input_axis)
 
+func update_collision():
+	stand.disabled = is_crouching
+	crouch.disabled = not is_crouching
 
 func update_animations(input_axis):
 	if input_axis != 0:
 		animated_sprite_2d.flip_h = input_axis < 0
-		animated_sprite_2d.play("run")
-	elif  Input.is_action_pressed("crouch"):
+	if not is_on_floor() and velocity.y < 0:
+		animated_sprite_2d.play("jump")
+		return
+	if not is_on_floor() and velocity.y >= 0:
+		animated_sprite_2d.play("fall")
+		return
+	if is_crouching:
 		animated_sprite_2d.play("crouch")
 		return
-	else:
-		animated_sprite_2d.play("idle")
-		
-	if not is_on_floor():
-		animated_sprite_2d.play("jump")
+	if input_axis != 0:
+		animated_sprite_2d.play("run")
+		return
+	animated_sprite_2d.play("idle")

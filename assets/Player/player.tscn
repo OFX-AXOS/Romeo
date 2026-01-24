@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bapvy71043313"]
+[gd_scene load_steps=21 format=3 uid="uid://bapvy71043313"]
 
 [ext_resource type="Script" uid="uid://b4ta3tyio217r" path="res://assets/Player/player.gd" id="1_qm3y6"]
 [ext_resource type="Texture2D" uid="uid://bt8gb54hjkhl1" path="res://assets/Player/player.png" id="2_vtor2"]
@@ -14,6 +14,14 @@ region = Rect2(66, 96, 33, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_rasfy"]
 atlas = ExtResource("2_vtor2")
 region = Rect2(33, 160, 33, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qm3y6"]
+atlas = ExtResource("2_vtor2")
+region = Rect2(0, 128, 33, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7gujn"]
+atlas = ExtResource("2_vtor2")
+region = Rect2(33, 128, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3jw8u"]
 atlas = ExtResource("2_vtor2")
@@ -78,6 +86,17 @@ animations = [{
 }],
 "loop": true,
 "name": &"fall",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qm3y6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7gujn")
+}],
+"loop": false,
+"name": &"hurt",
 "speed": 12.0
 }, {
 "frames": [{

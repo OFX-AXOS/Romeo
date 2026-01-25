@@ -1,0 +1,82 @@
+[gd_scene load_steps=12 format=3 uid="uid://co13bmiiwb06a"]
+
+[ext_resource type="Texture2D" uid="uid://cqdljtktwqe5f" path="res://assets/Enemies and NPC/ant/ant-sheet.png" id="1_cf3yk"]
+[ext_resource type="Script" uid="uid://c0ucht7cnviqm" path="res://enemies/ant.gd" id="1_faj7c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_faj7c"]
+atlas = ExtResource("1_cf3yk")
+region = Rect2(0, 0, 37, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yyt1h"]
+atlas = ExtResource("1_cf3yk")
+region = Rect2(37, 0, 37, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ovtlf"]
+atlas = ExtResource("1_cf3yk")
+region = Rect2(74, 0, 37, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_04p8t"]
+atlas = ExtResource("1_cf3yk")
+region = Rect2(111, 0, 37, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_61upu"]
+atlas = ExtResource("1_cf3yk")
+region = Rect2(148, 0, 37, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vn8fu"]
+atlas = ExtResource("1_cf3yk")
+region = Rect2(185, 0, 37, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wot7h"]
+atlas = ExtResource("1_cf3yk")
+region = Rect2(222, 0, 37, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pipmh"]
+atlas = ExtResource("1_cf3yk")
+region = Rect2(259, 0, 37, 31)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_od5kq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_faj7c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yyt1h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ovtlf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_04p8t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_61upu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vn8fu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wot7h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pipmh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="Ant" type="Node2D"]
+script = ExtResource("1_faj7c")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_od5kq")
+autoplay = "default"
+frame_progress = 0.19508831
+
+[node name="raycast_right" type="RayCast2D" parent="."]
+target_position = Vector2(23, 0)
+
+[node name="raycast_left" type="RayCast2D" parent="."]
+target_position = Vector2(-19, 0)

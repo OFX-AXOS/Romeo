@@ -41,7 +41,7 @@ func update_animations(input_axis):
 	if not is_on_floor() and velocity.y < 0:
 		animated_sprite_2d.play("jump")
 		return
-	if not is_on_floor() and velocity.y >= 0:
+	if not is_on_floor() and velocity.y >= 150:
 		animated_sprite_2d.play("fall")
 		return
 	if is_crouching:

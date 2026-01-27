@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://b1doyik5oe35f"]
+[gd_scene load_steps=11 format=3 uid="uid://b1doyik5oe35f"]
 
 [ext_resource type="PackedScene" uid="uid://bapvy71043313" path="res://assets/Player/player.tscn" id="1_uwrxv"]
 [ext_resource type="TileSet" uid="uid://dgp60fa4r1vdi" path="res://assets/world-tileset.tres" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://tn3y3q4cuihp" path="res://scenes/platform.tscn" id="3_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://d1be5qw3l2snw" path="res://enemies/ghost.tscn" id="4_lbhrr"]
 [ext_resource type="Script" uid="uid://cy0kiyu3is0si" path="res://enemies/ghost2.gd" id="5_iywne"]
+[ext_resource type="Script" uid="uid://b4hfktomykbx6" path="res://scripts/kill_zone.gd" id="6_p57ef"]
 
 [sub_resource type="Animation" id="Animation_lbhrr"]
 length = 0.001
@@ -44,11 +45,14 @@ _data = {
 &"move": SubResource("Animation_lnu2h")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u5sy4"]
+size = Vector2(262, 20)
+
 [node name="Game" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 z_index = 2
-position = Vector2(-126, -10)
+position = Vector2(362, -21)
 floor_max_angle = 1.2217305
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -82,3 +86,16 @@ script = ExtResource("5_iywne")
 speed = 70.0
 float_strength = 60.0
 float_speed = 1.0
+
+[node name="KillZone" type="Area2D" parent="."]
+script = ExtResource("6_p57ef")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone"]
+position = Vector2(449, 114)
+shape = SubResource("RectangleShape2D_u5sy4")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="KillZone"]
+position = Vector2(1225, 71)
+shape = SubResource("RectangleShape2D_u5sy4")
+
+[connection signal="body_entered" from="KillZone" to="KillZone" method="_on_kill_zone_body_entered"]

@@ -42,9 +42,10 @@ func _on_kill_area_body_entered(body):
 	if is_dead:
 		return
 	
-	if body.name == "Player":
+	if body.has_method("die"):
 		print("Ghost killed player!")
-		get_tree().reload_current_scene()
+		body.die()
+
 
 func _on_weak_spot_body_entered(body):
 	if is_dead:

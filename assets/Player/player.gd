@@ -6,6 +6,7 @@ const JUMP_VELOCITY = -300.0
 @onready var crouch: CollisionShape2D = $crouch
 @onready var animated_sprite_2d = $AnimatedSprite2D
 
+var is_dead := false
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var is_crouching := false
 
@@ -51,3 +52,10 @@ func update_animations(input_axis):
 		animated_sprite_2d.play("run")
 		return
 	animated_sprite_2d.play("idle")
+
+
+func die():
+	if is_dead:
+		return
+	is_dead = true
+	get_tree().call_deferred("reload_current_scene")

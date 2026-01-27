@@ -14,11 +14,8 @@ var is_dead: bool = false
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 func _ready():
-	if sprite:
-		if sprite.sprite_frames and sprite.sprite_frames.has_animation("float"):
-			sprite.play("float")
-		else:
-			sprite.visible = true
+	if sprite and sprite.sprite_frames and sprite.sprite_frames.has_animation("float"):
+		sprite.play("float")
 
 func _physics_process(delta):
 	if is_dead:
@@ -26,24 +23,27 @@ func _physics_process(delta):
 	
 	time += delta
 	distance_moved += abs(speed * delta)
-	
+
 	if distance_moved >= 180:
 		move_direction *= -1
 		distance_moved = 0
 		if sprite:
 			sprite.flip_h = move_direction < 0
-	
+
 	velocity.x = speed * move_direction
 	velocity.y = cos(time * float_speed) * float_strength
-	
 	move_and_slide()
 
 func _on_kill_area_body_entered(body):
 	if is_dead:
 		return
-	
-	if body.name == "Player":
-		get_tree().call_deferred("reload_current_scene")
+
+	var player = body
+	while player and not player.has_method("die"):
+		player = player.get_parent()
+
+	if player:
+		player.die()
 
 func _on_weak_spot_body_entered(body):
 	if is_dead:
@@ -83,4 +83,4 @@ func ghost_die():
 		tween.tween_property(sprite, "modulate:a", 0, 0.5)
 		await tween.finished
 	
-	call_deferred("queue_free")
+	queue_free()

@@ -155,7 +155,7 @@ height = 18.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_7gujn"]
 radius = 8.0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_qm3y6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

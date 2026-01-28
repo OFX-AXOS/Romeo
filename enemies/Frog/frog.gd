@@ -1,43 +1,47 @@
 extends CharacterBody2D
 
-@export var speed: float = 60.0
-@export var float_strength: float = 30.0
-@export var float_speed: float = 1.5
-@export var ghost_health: int = 1
 
-var move_direction: int = 1
-var time: float = 0.0
-var distance_moved: float = 0.0
+const SPEED = 80.0
+const JUMP_VELOCITY = -400.0
+
+var direction = 1
+var state = "idle"
+
 var is_dead: bool = false
-
+@export var frog_health: int = 1
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
-func _ready():
-	if sprite:
-		if sprite.sprite_frames and sprite.sprite_frames.has_animation("float"):
-			sprite.play("float")
-		else:
-			sprite.visible = true
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
 
 func _physics_process(delta):
-	if is_dead:
-		return
 	
-	time += delta
-	distance_moved += abs(speed * delta)
-	
-	if distance_moved >= 200:
-		move_direction *= -1
-		distance_moved = 0
-		if sprite:
-			sprite.flip_h = move_direction < 0
-	
-	velocity.x = speed * move_direction
-	velocity.y = sin(time * float_speed) * float_strength
-	
+	if  is_on_floor():
+		# stop if is on the floor
+		velocity.x = 0
+		$AnimatedSprite2D.play("idle")
+		
+	else:
+		# Add the gravity and move horizontally if is on air. 
+		velocity.x = direction * SPEED
+		velocity.y += gravity * delta
+		if velocity.y > 0:
+			$AnimatedSprite2D.play("fall")
+		else:
+			$AnimatedSprite2D.play("jump")
+
 	move_and_slide()
 	
+	# flip sprite
+	$AnimatedSprite2D.flip_h = direction >0
+	
+	
+func jump():
+	velocity.y = JUMP_VELOCITY
+	
+
 func spawn_feedback():
 	var scene_to_spawn = preload("res://pickups/Feedback/feedback.tscn")
 	var new_scene_instance = scene_to_spawn.instantiate()
@@ -63,7 +67,7 @@ func _on_weak_spot_body_entered(body):
 		
 		if is_player_above(body):
 			spawn_feedback()
-			ghost_take_damage()
+			frog_take_damage()
 			
 			
 			if body.has_method("bounce"):
@@ -72,9 +76,9 @@ func _on_weak_spot_body_entered(body):
 func is_player_above(body):
 	return body.global_position.y < global_position.y
 
-func ghost_take_damage():
-	ghost_health -= 1
-	if ghost_health <= 0:
+func frog_take_damage():
+	frog_health -= 1
+	if frog_health <= 0:
 		ghost_die()
 
 func ghost_die():
@@ -89,3 +93,11 @@ func ghost_die():
 		await tween.finished
 	
 	queue_free()
+	
+	
+
+
+func _on_timer_timeout():
+	# when timer finish, change direction and jump
+	direction *= -1
+	jump()

@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://cghcy16f6k2tv"]
+
+[ext_resource type="Texture2D" uid="uid://dfj6wud1s845s" path="res://assets/Tiles.png" id="1_5h2di"]
+[ext_resource type="Script" uid="uid://drcp5l0gix8yx" path="res://scenes/level_change.gd" id="1_d5jve"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d5jve"]
+size = Vector2(28, 26)
+
+[node name="Area2D" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_d5jve")
+target_scene = "uid://b1doyik5oe35f"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 1)
+texture = ExtResource("1_5h2di")
+region_enabled = true
+region_rect = Rect2(289, 277, 30, 28)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_d5jve")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

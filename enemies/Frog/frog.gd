@@ -1,12 +1,9 @@
 extends CharacterBody2D
 
-
 const SPEED = 80.0
 const JUMP_VELOCITY = -400.0
-
 var direction = 1
 var state = "idle"
-
 var is_dead: bool = false
 @export var frog_health: int = 1
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -15,9 +12,7 @@ var is_dead: bool = false
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
-
 func _physics_process(delta):
-	
 	if  is_on_floor():
 		# stop if is on the floor
 		velocity.x = 0
